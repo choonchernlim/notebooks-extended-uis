@@ -332,7 +332,7 @@
         console.log('Starting instance ' + instanceFullName);
         // We add an update here so we change icon before API comes back.
         updateRowDOMFromState(instanceFullNameId, 'STARTING');
-        var url = "https://notebooks.googleapis.com/v1/" + instanceFullName + ":start";
+        var url = "https://compute.googleapis.com/compute/v1/" + instanceFullName.replace('locations', 'zones') + "/start";
         var request = gapi.client.request({
           'method': 'POST',
           'path': url
@@ -363,7 +363,7 @@
         console.log('Stopping instance ' + instanceFullName);
         // We add an update here so we change icon before API comes back.
         updateRowDOMFromState(instanceFullNameId, 'STOPPING');
-        var url = "https://notebooks.googleapis.com/v1/" + instanceFullName + ":stop";
+        var url = "https://compute.googleapis.com/compute/v1/" + instanceFullName.replace('locations', 'zones') + "/stop";
         var request = gapi.client.request({
           'method': 'POST',
           'path': url
@@ -583,7 +583,7 @@
       for (var i = 0; i < instances.length; i++) {
         instance = instances[i];
 
-        if (filter == filters.USER && !hasInstancePermission(instance)) {
+        if ((instance.state == 'DELETED') || (filter == filters.USER && !hasInstancePermission(instance))) {
           continue;
         }
 
